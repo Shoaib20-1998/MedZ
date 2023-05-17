@@ -38,41 +38,58 @@ export function Login() {
 // console.log(isAuth);
 
   const handleLogin = (e) => {
-    let flag = false;
     e.preventDefault();
-    setRedirect(true);
-    console.log(newuserdata)
-    for (let i = 0; i < newuserdata.length; i++) {
-      if (newuserdata[i].email === email && newuserdata[i].password === password) {
-        localStorage.setItem('user', newuserdata[i].firstname + " " + newuserdata[i].lastname);
-        flag = true;
-        break;
-      }
-    }
-
-    // console.log("flag",flag)
-   if (flag) {
-      dispatch(userLogin);
+    if(email == ""){
       toast({
-          title: "Logged In 👍.",
-          description: "Login Successfully!",
-          status: "success",
-          duration: 2000,
-          isClosable: true,
-        });
-        navigate(location.state, { replace: true });
-      }else{
+        title: "Please fill the email",
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+      });
+    }else if(password == ""){
+      toast({
+        title: "Please fill the password",
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+      });
+    }else{
 
+      let flag = false;
+      setRedirect(true);
+      console.log(newuserdata)
+      for (let i = 0; i < newuserdata.length; i++) {
+        if (newuserdata[i].email === email && newuserdata[i].password === password) {
+          localStorage.setItem('user', newuserdata[i].firstname + " " + newuserdata[i].lastname);
+          flag = true;
+          break;
+        }
+      }
+  
+      // console.log("flag",flag)
+     if (flag) {
+        dispatch(userLogin);
         toast({
-          title: "Login Failed 🙏.",
-          description: "Invalid email and password!",
-          status: "error",
-          duration: 2000,
-          isClosable: true,
-        });
+            title: "Logged In 👍.",
+            description: "Login Successfully!",
+            status: "success",
+            duration: 2000,
+            isClosable: true,
+          });
+          navigate(location.state, { replace: true });
+        }else{
+  
+          toast({
+            title: "Login Failed 🙏.",
+            description: "Invalid email and password!",
+            status: "error",
+            duration: 2000,
+            isClosable: true,
+          });
+      }
+      setEmail("");
+      setPassword("")
     }
-    setEmail("");
-    setPassword("")
   }
     
 

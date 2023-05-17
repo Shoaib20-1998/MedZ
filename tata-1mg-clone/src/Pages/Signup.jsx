@@ -12,7 +12,11 @@ import {
   Image,
   Text,
   Select,
-  useToast 
+  useToast,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
@@ -32,11 +36,11 @@ const initialState = {
   password: "",
 };
 export default function Signup() {
-  const toast = useToast()
+  const toast = useToast();
   const [formState, setFormState] = useState(initialState);
   const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
-  const isAuth = useSelector((store)=>store.authReducer.isAuth);
+  const isAuth = useSelector((store) => store.authReducer.isAuth);
   console.log(isAuth);
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -44,27 +48,81 @@ export default function Signup() {
   };
   const handleUser = (e) => {
     e.preventDefault();
-    dispatch(CreateUser(formState)).then(()=>{
+    if (formState.firstname == "") {
       toast({
-        title: "Account Created 👍.",
-        description: "We created Account for you!",
-        status: "success",
-        duration: 2000,
-        isClosable: true,
-      });
-    }).catch(()=>{
-      toast({
-        title: "Account Not Created.",
-        description: "Failed to Create Account!",
+        title: "Please fill the firstname",
         status: "error",
         duration: 2000,
         isClosable: true,
       });
-    })
-    setFormState(initialState);
+    }else if(formState.lastname == ""){
+      toast({
+        title: "Please fill the lastname",
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+      });
+    }else if(formState.email == ""){
+      toast({
+        title: "Please fill the email",
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+      });
+    }else if(formState.age == ""){
+      toast({
+        title: "Please fill the age",
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+      });
+    }else if(formState.gender == ""){
+      toast({
+        title: "Please select the gender",
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+      });
+    }else if(formState.maritalstatus == ""){
+      toast({
+        title: "Please select the maritalstatus",
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+      });
+    }else if(formState.password == ""){
+      toast({
+        title: "Please fill the password",
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+      });
+    }
+    else {
+      dispatch(CreateUser(formState))
+        .then(() => {
+          toast({
+            title: "Account Created 👍.",
+            description: "We created Account for you!",
+            status: "success",
+            duration: 2000,
+            isClosable: true,
+          });
+        })
+        .catch(() => {
+          toast({
+            title: "Account Not Created.",
+            description: "Failed to Create Account!",
+            status: "error",
+            duration: 2000,
+            isClosable: true,
+          });
+        });
+      setFormState(initialState);
+    }
   };
-  if(isAuth){
-    return <Navigate to={'/login'} />
+  if (isAuth) {
+    return <Navigate to={"/login"} />;
   }
   return (
     <>
@@ -97,7 +155,7 @@ export default function Signup() {
                       value={formState.firstname}
                       name={"firstname"}
                       onChange={handleChange}
-                      focusBorderColor='#ff6f61'
+                      focusBorderColor="#ff6f61"
                     />
                   </FormControl>
                 </Box>
@@ -116,7 +174,7 @@ export default function Signup() {
                       value={formState.lastname}
                       name={"lastname"}
                       onChange={handleChange}
-                      focusBorderColor='#ff6f61'
+                      focusBorderColor="#ff6f61"
                     />
                   </FormControl>
                 </Box>
@@ -135,7 +193,7 @@ export default function Signup() {
                   value={formState.email}
                   name={"email"}
                   onChange={handleChange}
-                  focusBorderColor='#ff6f61'
+                  focusBorderColor="#ff6f61"
                 />
               </FormControl>
               <FormControl id="age" isRequired>
@@ -152,7 +210,7 @@ export default function Signup() {
                   value={formState.age}
                   name={"age"}
                   onChange={handleChange}
-                  focusBorderColor='#ff6f61'
+                  focusBorderColor="#ff6f61"
                 />
               </FormControl>
               <FormControl id="gender" isRequired>
@@ -164,7 +222,7 @@ export default function Signup() {
                   value={formState.gender}
                   name={"gender"}
                   onChange={handleChange}
-                  focusBorderColor='#ff6f61'
+                  focusBorderColor="#ff6f61"
                 >
                   <option style={{ backgroundColor: "white" }} value="male">
                     Male
@@ -183,7 +241,7 @@ export default function Signup() {
                   value={formState.maritalstatus}
                   name={"maritalstatus"}
                   onChange={handleChange}
-                  focusBorderColor='#ff6f61'
+                  focusBorderColor="#ff6f61"
                 >
                   <option style={{ backgroundColor: "white" }} value="single">
                     Single
@@ -208,7 +266,7 @@ export default function Signup() {
                     value={formState.password}
                     name={"password"}
                     onChange={handleChange}
-                    focusBorderColor='#ff6f61'
+                    focusBorderColor="#ff6f61"
                   />
                   <InputRightElement h={"full"}>
                     <Button
@@ -259,7 +317,7 @@ export default function Signup() {
               <Stack pt={6}>
                 <Text align={"center"} color={"black"}>
                   Already a user?{" "}
-                  <Link style={{color:'blue'}} to={"/login"}>
+                  <Link style={{ color: "blue" }} to={"/login"}>
                     Login
                   </Link>
                 </Text>
@@ -272,4 +330,3 @@ export default function Signup() {
     </>
   );
 }
-
